@@ -1,0 +1,5 @@
+- npm i
+- instlal ngrok for port forwarding
+- check .env for FB access token and google auth
+- change callback URLs @FB && @DigitalFlow
+- The verification token for fb = 'bot'
