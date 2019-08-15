@@ -5,7 +5,7 @@ const router = new express.Router();
 const request = require('request');
 const logger = require('pino')();
 const { Reminder } = require('../models/reminder');
-// const { getTimeAndSetNotificator } = require('../helpers/schedule') CIRCULAR DEPENDENCY
+
 const projectId = 'newagent-hwrlxh';
 const msngrSettings = require('../helpers/messengerSettings');
 const {
@@ -145,8 +145,6 @@ async function handlePostback(_senderPsid, receivedPostback, _time) {
   callSendAPI(_senderPsid, response);
 }
 
-// Sends response messages via the Send API
-
 /** Facebook hook  */
 
 router.get('/', (req, res) => {
@@ -223,7 +221,6 @@ router.post('/dialogflow', async (req, res) => {
         sender_psid: senderPsid,
       });
       await reminder.save();
-      // add time to queue array
       res.status(200).send({
         fulfillmentText: 'Reminder saved!',
       });
@@ -255,9 +252,5 @@ router.post('/dialogflow', async (req, res) => {
       fulfillmentText: `Deleted: ${reminders.deletedCount}`,
     });
   }
-  if (action === ' reminders.snooze') {
-    // modify reminder trigger time
-  }
-  res.status(200);
 });
 module.exports = { router, handleMessage, time };

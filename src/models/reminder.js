@@ -7,6 +7,5 @@ const reminderSchema = new mongoose.Schema({
   sender_psid: String,
 });
 const Reminder = mongoose.model('Reminder', reminderSchema);
-// tried to change it to mongoose.Model to fix eslint but mongoose doesn't allow that
 
 exports.Reminder = Reminder;
