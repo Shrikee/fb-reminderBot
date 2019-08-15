@@ -1,58 +1,56 @@
-const request = require('request')
+const request = require('request');
+const logger = require('pino')();
 
-module.exports = function() {
-  setGetStartedPostback()
-  setGreetingsText()
-  setMenu()
+module.exports = function messangerSetter() {
   function setGreetingsText() {
-    let request_body = {
+    const requestBody = {
       greeting: [
         {
           locale: 'default',
           text: 'Hello {{user_first_name}}!',
         },
       ],
-    }
+    };
     request(
       {
         uri: 'https://graph.facebook.com/v2.6/me/messenger_profile',
         qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
         method: 'POST',
-        json: request_body,
+        json: requestBody,
       },
-      (err, res, body) => {
+      (err, res) => {
         if (!err) {
-          console.log('   Greetings set! ' + JSON.stringify(res.body))
+          logger.info(`   Greetings set! ${JSON.stringify(res.body)}`);
         } else {
-          console.error('Unable to set greetings:' + err)
+          logger.error(`Unable to set greetings:${err}`);
         }
-      }
-    )
+      },
+    );
   }
 
   function setGetStartedPostback() {
-    let request_body = {
+    const requestBody = {
       get_started: { payload: 'Start' },
-    }
+    };
     request(
       {
         uri: 'https://graph.facebook.com/v2.6/me/messenger_profile',
         qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
         method: 'POST',
-        json: request_body,
+        json: requestBody,
       },
-      (err, res, body) => {
+      (err, res) => {
         if (!err) {
-          console.log('   Get Started set!: ' + JSON.stringify(res.body))
+          logger.info(`   Get Started set!: ${JSON.stringify(res.body)}`);
         } else {
-          console.error('Unable to set Get Started:' + err)
+          logger.error(`Unable to set Get Started:${err}`);
         }
-      }
-    )
+      },
+    );
   }
 
   function setMenu() {
-    let request_body = {
+    const requestBody = {
       persistent_menu: [
         {
           locale: 'default',
@@ -76,21 +74,24 @@ module.exports = function() {
           ],
         },
       ],
-    }
+    };
     request(
       {
         uri: 'https://graph.facebook.com/v2.6/me/messenger_profile',
         qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
         method: 'POST',
-        json: request_body,
+        json: requestBody,
       },
-      (err, res, body) => {
+      (err, res) => {
         if (!err) {
-          console.log('   setMenu set!: ' + JSON.stringify(res.body))
+          logger.info(`   setMenu set!: ${JSON.stringify(res.body)}`);
         } else {
-          console.error('Unable to set Get Started:' + err)
+          logger.error(`Unable to set Get Started:${err}`);
         }
-      }
-    )
+      },
+    );
   }
-}
+  setGetStartedPostback();
+  setGreetingsText();
+  setMenu();
+};
